@@ -1,1 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HesabuQuest • Math Game</title>
 
+  <!-- Add Material Symbols Icon Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="style.css">
+
+  
+</head>
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar">
+    <div class="logo"> HesabuQuest</div>
+
+    <!-- Navigation Links (Aligned Right and Simplified, no underline) -->
+    <div class="nav-links">
+      <!-- Added explicit <a> tag to control text-decoration universally -->
+      <a class="nav-link" href="#" onclick="showWelcome()">
+        <span class="material-symbols-outlined">home</span>
+        <span>Home</span>
+      </a>
+      <a class="nav-link" href="#" onclick="showLogin()">
+        <span class="material-symbols-outlined">login</span>
+        <span>Login</span>
+      </a>
+      <a class="nav-link" href="#" onclick="showSignup()">
+        <span class="material-symbols-outlined">person_add</span>
+        <span>Register</span>
+      </a>
+    </div>
+  </nav>
+  
+  <!-- CENTERED STATS BAR (MOVED BELOW NAVBAR) -->
+  <!-- ID 'stats-container' added for JS toggling. Display is now controlled dynamically. -->
+  <div class="stats-center-container" id="stats-container">
+    <div class="stats-nav">
+      <div class="stat-item">
+        <span class="material-symbols-outlined">leaderboard</span>
+        <span>Lvl </span>
+        <span id="level-display">1</span>
+      </div>
+      <div class="stat-item">
+        <span class="material-symbols-outlined">star</span>
+        <span id="xp-display">0</span>
+        <span> XP</span>
+      </div>
+      <div class="stat-item badges-nav" onclick="showBadges()">
+        <span class="material-symbols-outlined">trophy</span>
+        <span id="badges-display">0</span>
+        <span> Badges</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+    
+    <!-- LOGIN PAGE -->
+    <div id="login" class="page">
+        <div class="auth-card">
+            <h2 class="welcome-title" style="font-size: 2rem;">
+              <span class="material-symbols-outlined" style="font-size: 2rem; vertical-align: bottom;">login</span>
+              Login to Your Account
+            </h2>
+            <form onsubmit="event.preventDefault(); handleLogin();">
+                <div class="input-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="play-btn" style="margin-bottom: 1rem;">Login</button>
+                <div style="font-size:0.9rem; color:var(--text-secondary);">
+                    Don't have an account? <a href="#" onclick="showSignup()" style="color:var(--accent-hover); text-decoration: none;">Register here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SIGNUP PAGE -->
+    <div id="signup" class="page">
+        <div class="auth-card">
+            <h2 class="welcome-title" style="font-size: 2rem;">
+              <span class="material-symbols-outlined" style="font-size: 2rem; vertical-align: bottom;">person_add</span>
+              Create New Account
+            </h2>
+            <form onsubmit="event.preventDefault(); handleSignup();">
+                <div class="input-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="input-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <button type="submit" class="play-btn" style="margin-bottom: 1rem;">Register</button>
+                <div style="font-size:0.9rem; color:var(--text-secondary);">
+                    Already have an account? <a href="#" onclick="showLogin()" style="color:var(--accent-hover); text-decoration: none;">Login here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- HOME / WELCOME PAGE -->
+    <div id="welcome" class="page active">
+      <div class="welcome-card">
+        <div class="welcome-title">
+          
+          Welcome to HesabuQuest
+        </div>
+        <div class="welcome-subtitle">
+          “Hesabu” means <strong>mathematics</strong> in Swahili. Making math fun 
+        </div>
+        <button class="play-btn" onclick="startGame()">Start Your Quest</button>
+      </div>
+    </div>
+
+    <!-- QUIZ PAGE -->
+    <div id="quiz" class="page">
+      <div class="quiz-card">
+        <div class="question-header">
+          <div class="question-counter">Question <span id="question-num">1</span> of <span id="total-questions">10</span></div>
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+        <div class="question-text" id="question-text">Loading…</div>
+        <div class="choices-grid" id="choices-grid"></div>
+        <div class="feedback" id="feedback"></div>
+      </div>
+    </div>
+
+    <!-- BADGES PAGE -->
+    <div id="badges" class="page">
+      <div class="quiz-card">
+        <h2 style="text-align:center;margin-bottom:1.5rem;color:var(--accent);">
+          <span class="material-symbols-outlined" style="font-size: 1.5rem; vertical-align: bottom;">trophy</span>
+          Your Achievements
+        </h2>
+        <div class="badges-grid" id="badges-grid"></div>
+        <div style="text-align:center;margin-top:2rem;">
+          <button class="btn-secondary" onclick="showWelcome()">Back to Home</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEVEL‑UP MODAL -->
+  <div id="level-up-modal" class="level-up-modal" style="display:none;">
+    <div class="level-up-content">
+      <div style="font-size:4rem;margin-bottom:1rem;">
+        <span class="material-symbols-outlined" style="font-size: 4rem; color: var(--warning);">celebration</span>
+      </div>
+      <h2 style="color:var(--accent);margin-bottom:1rem;">Level Up!</h2>
+      <p style="margin-bottom:2rem;">You've reached Level <span id="new-level">2</span>!</p>
+      <button class="play-btn" onclick="closeLevelUpModal()">Continue</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
